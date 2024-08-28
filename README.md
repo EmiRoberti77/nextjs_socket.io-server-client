@@ -1,4 +1,9 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+![Screenshot 2024-08-27 at 07 30 57](https://github.com/user-attachments/assets/fce8d141-8082-462e-bd35-0be78fa22869)
+
+# documentation 
+
+https://socket.io/docs/v4/
 
 ## Getting Started
 
