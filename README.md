@@ -89,7 +89,7 @@ WebSocket Implementation
 
 The WebSocket client is set up using the standard WebSocket API available in modern browsers. Here are the core functions:
 
-    •	Creating a New Socket Connection:
+reating a New Socket Connection:
 
 ```typescript
 const createNewSocket = () => {
