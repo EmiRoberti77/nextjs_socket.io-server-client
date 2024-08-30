@@ -1,6 +1,6 @@
 # WebSocket Next.js Project
 
-implementation of WebSocket communication to maintain a real-time connection with a server. The project includes features like automatically sending ping messages to keep the connection alive, managing the WebSocket connection lifecycle, and handling real-time messages from the server.
+Implementation of WebSocket communication to maintain a real-time connection with a server. The project includes features like automatically sending ping messages to keep the connection alive, managing the WebSocket connection lifecycle, and handling real-time messages from the server.
 
 Table of Contents
 
