@@ -4,6 +4,11 @@ const socket_url = process.env.NEXT_PUBLIC_SOCKET_URL!;
 interface WSSMessages {
   message: any;
 }
+const INTERVAL = 10000;
+enum wsMsg {
+  PING = "PING",
+  PONG = "PONG",
+}
 
 export default function WebSocketPage() {
   const [messages, setMessages] = useState<WSSMessages[]>([]);
@@ -53,8 +58,8 @@ export default function WebSocketPage() {
 
   const turnOnPing = () => {
     pingIntervalRef.current = setInterval(() => {
-      sendMessage("ping");
-    }, 5000);
+      sendMessage(wsMsg.PING);
+    }, INTERVAL);
   };
 
   const turnOffPing = () => {
@@ -91,7 +96,7 @@ export default function WebSocketPage() {
   };
   return (
     <div>
-      <button onClick={() => sendMessage("pong")}>GET CONNECTION ID</button>
+      <button onClick={() => sendMessage(wsMsg.PONG)}>GET CONNECTION ID</button>
       <button onClick={() => connection("open")}>CONNECT</button>
       <button onClick={() => connection("close")}>CLOSE</button>
       {messages.map((msg, index) => (
