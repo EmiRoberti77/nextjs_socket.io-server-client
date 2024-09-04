@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 const socket_url = process.env.NEXT_PUBLIC_SOCKET_URL!;
 interface WSSMessages {
   message: any;
@@ -10,10 +11,17 @@ enum wsMsg {
   PONG = "PONG",
 }
 
+const registerEndPoint =
+  "https://hnazer5afk.execute-api.us-east-1.amazonaws.com/prod/connectionid";
+
 export default function WebSocketPage() {
   const [messages, setMessages] = useState<WSSMessages[]>([]);
   const socketRef = useRef<WebSocket | null>(null);
   const pingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [id, setId] = useState<string>("1");
+  const [site, setSite] = useState<string>("site1#channel1");
+  const [connectionId, setConnectionId] = useState<string>("dfTeqforoAMCK-g=");
+  const [msg, setMsg] = useState("");
 
   useEffect(() => {
     createNewSocket();
@@ -94,14 +102,63 @@ export default function WebSocketPage() {
         break;
     }
   };
+
+  const registerChannel = async () => {
+    const body = {
+      id,
+      site,
+      connectionId,
+    };
+
+    const response = await fetch(registerEndPoint, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (response.status === 200)
+      setMsg(response.body + " " + new Date().toISOString());
+    else setMsg("failed to register");
+  };
+
   return (
     <div>
-      <button onClick={() => sendMessage(wsMsg.PONG)}>GET CONNECTION ID</button>
-      <button onClick={() => connection("open")}>CONNECT</button>
-      <button onClick={() => connection("close")}>CLOSE</button>
-      {messages.map((msg, index) => (
-        <li key={index}>{msg.message}</li>
-      ))}
+      <div>{msg}</div>
+      <div>
+        <input
+          type="text"
+          onChange={(e) => setId(e.target.value)}
+          placeholder="uid"
+        />
+        <input
+          type="text"
+          onChange={(e) => setSite(e.target.value)}
+          placeholder="channel name"
+        />
+        <input
+          type="text"
+          onChange={(e) => setConnectionId(e.target.value)}
+          placeholder="connection id"
+        />
+        <button onClick={registerChannel}>REGISTER TO SERVER</button>
+      </div>
+      <hr />
+      <div>
+        <button onClick={() => sendMessage(wsMsg.PONG)}>
+          GET CONNECTION ID
+        </button>
+        <button onClick={() => connection("open")}>CONNECT</button>
+        <button onClick={() => connection("close")}>CLOSE</button>
+      </div>
+      <hr />
+      <div>
+        {messages.map((msg, index) => (
+          <li key={index}>{msg.message}</li>
+        ))}
+      </div>
+      <hr />
     </div>
   );
 }
