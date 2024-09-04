@@ -5,6 +5,7 @@ const socket_url = process.env.NEXT_PUBLIC_SOCKET_URL!;
 interface WSSMessages {
   message: any;
 }
+const PING = '"message":"PING"';
 const INTERVAL = 10000;
 enum wsMsg {
   PING = "PING",
@@ -43,8 +44,10 @@ export default function WebSocketPage() {
       const msg: WSSMessages = {
         message: e.data,
       };
-      console.log("msg", msg);
-      setMessages((prev) => [...prev, msg]);
+
+      if (String(msg.message).includes(PING)) {
+        console.log(msg.message);
+      } else setMessages((prev) => [...prev, msg]);
     });
 
     socketRef.current.addEventListener("close", () => {
@@ -114,6 +117,7 @@ export default function WebSocketPage() {
       method: "POST",
       headers: {
         "Content-type": "application/json",
+        "x-api-key": process.env.NEXT_PUBLIC_REGISTRATION_API_KEY!,
       },
       body: JSON.stringify(body),
     });
