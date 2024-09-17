@@ -111,6 +111,7 @@ export default function WebSocketPage() {
       id,
       site,
       connectionId,
+      lastActiveStateDateTime: new Date().toISOString(),
     };
 
     const response = await fetch(registerEndPoint, {
