@@ -28,8 +28,27 @@ export default function WebSocketPage() {
     createNewSocket();
     return () => {
       closeSocket();
+      closeWindowConnetion();
     };
   }, []);
+
+  const closeWindowConnetion = async () => {
+    console.log("closing connection");
+    try {
+      const delEndPoint = `${registerEndPoint}?id=${id}&site=${site}`;
+      const response = await fetch(delEndPoint, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": process.env.NEXT_PUBLIC_REGISTRATION_API_KEY!,
+        },
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (err: any) {
+      console.error(err.message);
+    }
+  };
 
   const createNewSocket = () => {
     if (socketRef.current?.readyState === WebSocket.OPEN) return;
